@@ -10,7 +10,7 @@ A Reactive Application that ingests Twitter streams, performs Sentiment Analysis
 
 
 ScaledAction pipeline
-![ScaledAction pipeline](https://github.com/scaledaction/sentiment-analysis/blob/images/images/pipeline1.png)
+![ScaledAction pipeline](https://github.com/scaledaction/sentiment-analysis/blob/images/images/Pipeline1b.png)
 
 
 # Deployment via DTK
