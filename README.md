@@ -1,7 +1,7 @@
 # Twitter Stream Sentiment Analysis on the Fast Data Stack
 (description) - Its a Reactive Application . . .     
 (diagram)- our pipeline diagram
-![Twitter + Watson high level architecture](https://i2.wp.com/developer.ibm.com/clouddataservices/wp-content/uploads/sites/47/2015/10/Spark-Streaming-Twitter-architecture.png)
+![ScaledAction pipeline](https://github.com/scaledaction/sentiment-analysis/blob/images/images/pipeline1.png)
 
 
 # Deployment via dtk
