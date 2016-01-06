@@ -1,4 +1,4 @@
-# Twitter Stream Sentiment Analysis on a Fast Data Stack
+# Twitter Stream Sentiment Analysis and Query on a Fast Data Stack
 A Reactive Application that ingests Twitter streams, performs Sentiment Analysis, provides for queries and visualizes the results
 
 * Streams tweets using the Twitter stream API to [Akka](http://http://akka.io/)
@@ -8,13 +8,18 @@ A Reactive Application that ingests Twitter streams, performs Sentiment Analysis
 * Makes the data queryable via SQL using [Ignite](https://ignite.apache.org)
 * Visualizes the query results using [Zeppelin](https://zeppelin.incubator.apache.org)
 
+
 ScaledAction pipeline
 ![ScaledAction pipeline](https://github.com/scaledaction/sentiment-analysis/blob/images/images/pipeline1.png)
 
 
-# Deployment via dtk
+# Deployment via DTK
+Instructions for deployment . . .
 
-# Visualization with Zeppelin Notebook
-![Twitter + Watson high level architecture](https://raw.githubusercontent.com/abajwa-hw/zeppelin-stack/master/screenshots/4.png)
+# Execute SQL queries with Ignite
+Instructions for queries . . .
+
+# Visualize query results with Zeppelin Notebook
+![Zeppelin example](https://raw.githubusercontent.com/abajwa-hw/zeppelin-stack/master/screenshots/4.png)
 
 
