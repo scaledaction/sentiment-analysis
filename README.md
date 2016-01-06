@@ -1,4 +1,4 @@
-# Twitter Stream Sentiment Analysis on the Fast Data Stack
+# Twitter Stream Sentiment Analysis on a Fast Data Stack
 A Reactive Application that ingests Twitter streams, performs Sentiment Analysis, provides for queries and visualizes the results
 
 * Streams tweets using the Twitter stream API to [Akka](http://http://akka.io/)
