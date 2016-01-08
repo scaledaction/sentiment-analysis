@@ -16,10 +16,7 @@ ScaledAction pipeline
 # Deployment via DTK
 Instructions for deployment . . .
 
-# Execute SQL queries with Ignite
-Instructions for queries . . .
-
-# Visualize query results with Zeppelin Notebook
+# Execute SQL queries with Ignite and Zeppelin Notebook
 ![Zeppelin example](https://raw.githubusercontent.com/abajwa-hw/zeppelin-stack/master/screenshots/4.png)
 
 
