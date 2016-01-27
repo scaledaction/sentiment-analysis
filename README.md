@@ -79,6 +79,26 @@ CREATE TABLE IF NOT EXISTS tweets (
 exit
 ```
 
+#### Compile application into assembly jars
+```
+(cd to project base directory)
+sbt assembly
+```
+
+#### Run the Akka application (frontend)
+Note: "TweetSubject" is the subject for selecting tweets from the tweet stream.
+```
+java -cp ingest-frontend/target/scala-2.10/sentiment-ingest-frontend-assembly-1.0.jar \
+com.scaledaction.sentimentanalysis.ingest.frontend.DataIngestFrontendApp TweetSubject
+```
+
+#### Run the Spark application (backend)
+```
+java -cp ingest-backend/target/scala-2.10/sentiment-ingest-backend-assembly-1.0.jar \
+com.scaledaction.sentimentanalysis.ingest.backend.DataIngestBackendApp
+```
+
+
 #### To stop Kafka and remove the container
 ```
 docker stop kafka1
