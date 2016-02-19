@@ -25,7 +25,7 @@ Instructions for deployment . . .
 
 Linux:
 ```
-docker run --detach --name kafka1 -p 2181:2181 -p 9092:9092 --env ADVERTISED_HOST=localhost --env ADVERTISED_PORT=9092 spotify/kafka
+docker run --detach --name kafka1 -p 2181:2181 -p 9092:9092 --env ADVERTISED_HOST=kafka1 --env ADVERTISED_PORT=9092 spotify/kafka
 ```
 
 Mac:
@@ -79,35 +79,31 @@ CREATE TABLE IF NOT EXISTS tweets (
 exit
 ```
 
-#### Compile application into assembly jars
-```
-(cd to project base directory)
-sbt assembly
-```
-
-#### Run the Akka application (frontend)
+#### Start the Akka application (frontend) in a Docker container
 Note: "TweetSubject" is the subject for selecting tweets from the tweet stream.
 ```
-java -cp ingest-frontend/target/scala-2.10/sentiment-ingest-frontend-assembly-1.0.jar \
-com.scaledaction.sentimentanalysis.ingest.frontend.DataIngestFrontendApp TweetSubject
+docker run --detach --name frontend -e TWITTER_CONSUMER_KEY="" -e TWITTER_CONSUMER_SECRET="" -e TWITTER_TOKEN_KEY="" -e TWITTER_TOKEN_SECRET="" -e KAFKA_BROKERS="kafka1:9092" scaledaction/sentiment-analysis-ingest-frontend TweetSubject
 ```
 
-#### Run the Spark application (backend)
+#### Start the Spark application (backend) in a Docker container
 ```
-java -cp ingest-backend/target/scala-2.10/sentiment-ingest-backend-assembly-1.0.jar \
-com.scaledaction.sentimentanalysis.ingest.backend.DataIngestBackendApp
+docker run --detach --name backend --link kafka1:kafka --link cassandra1:cassandra -e KAFKA_BROKERS="kafka:9092" -e CASSANDRA_SEEDNODES="cassandra" scaledaction/sentiment-analysis-ingest-backend
 ```
 
-
-#### To stop Kafka and remove the container
+#### To follow the logs of an application container
 ```
+docker logs --follow CONTAINER
+```
+
+#### To stop and remove the application containers
+```
+docker stop frontend
+docker stop backend
 docker stop kafka1
-docker rm -v kafka1
-```
-
-#### To stop Cassandra and remove the container
-```
 docker stop cassandra1
+
+docker rm -v frontend
+docker rm -v backend
+docker rm -v kafka1
 docker rm -v cassandra1
 ```
-
