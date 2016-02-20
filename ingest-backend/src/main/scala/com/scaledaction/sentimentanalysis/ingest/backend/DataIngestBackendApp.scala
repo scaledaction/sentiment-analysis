@@ -71,9 +71,9 @@ object DataIngestBackendApp extends HasCassandraConfig with HasKafkaConfig with 
   }
 
   def createModel(sc: SparkContext, htf: HashingTF): ClassificationModel = {
-    val positiveData = sc.textFile("bin/tweet-corpus/positive.gz")
+    val positiveData = sc.textFile("/tweet-corpus/positive.gz")
       .map { text => new LabeledPoint(1, htf.transform(text.split(" "))) }
-    val negativeData = sc.textFile("bin/tweet-corpus/negative.gz")
+    val negativeData = sc.textFile("/tweet-corpus/negative.gz")
       .map { text => new LabeledPoint(0, htf.transform(text.split(" "))) }
     val training = positiveData.union(negativeData)
     NaiveBayes.train(training, lambda = 1.0, modelType = "multinomial")
