@@ -3,6 +3,8 @@ val globalSettings = Seq(
   scalaVersion := "2.10.5"
 )
 
+assemblyOption in assembly := (assemblyOption in assembly).value.copy(includeScala = false)
+
 val modulePrefix = "sentiment"
 
 lazy val core = (project in file("core"))
