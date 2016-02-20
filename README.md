@@ -21,6 +21,12 @@ Instructions for deployment . . .
 
 # Local execution for development
 
+#### Compile application into assembly jars and Docker images
+Execute the following in the project base directory:
+```
+./buildProject.sh 
+```
+
 ### Start Kafka in a Docker container
 
 Linux:
