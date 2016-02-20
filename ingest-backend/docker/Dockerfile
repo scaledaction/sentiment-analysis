@@ -1,4 +1,4 @@
-FROM scaledaction/dev-base:1.4.1 
+FROM scaledaction/docker-dev-base:1.4.1 
 
 MAINTAINER Scaled Action
 
