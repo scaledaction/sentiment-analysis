@@ -95,7 +95,7 @@ docker run --detach --name frontend --link kafka1:kafka \
 -e TWITTER_CONSUMER_SECRET="" \
 -e TWITTER_TOKEN_KEY="" \
 -e TWITTER_TOKEN_SECRET="" \
--e KAFKA_BROKERS="kafka1:9092" scaledaction/sentiment-analysis-ingest-frontend TweetSubject
+-e KAFKA_BROKERS="kafka:9092" scaledaction/sentiment-analysis-ingest-frontend TweetSubject
 ```
 
 #### Start the Spark application (backend) in a Docker container
