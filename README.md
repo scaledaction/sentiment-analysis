@@ -24,7 +24,7 @@ Instructions for deployment . . .
 #### Compile application into assembly jars and Docker images
 Execute the following in the project base directory:
 ```
-./buildProject.sh 
+./build-project.sh 
 ```
 
 ### Start Kafka in a Docker container
@@ -42,7 +42,7 @@ docker run --detach --name kafka1 -p 2181:2181 -p 9092:9092 --env ADVERTISED_HOS
 ### Configure Kafka
 ```
 # Connect to the container
-docker exec -i -t kafka1 bash
+docker exec -it kafka1 bash
 
 # cd to Kafka installation directory
 cd /opt/kafka_2.11-0.8.2.1
@@ -86,9 +86,16 @@ exit
 ```
 
 #### Start the Akka application (frontend) in a Docker container
-Note: "TweetSubject" is the subject for selecting tweets from the tweet stream.
+Note: 
+* "TweetSubject" is the subject for selecting tweets from the tweet stream. Modify to your choice, e.g. Apple
+* Enter your own Twitter OAuth values for TWITTER_CONSUMER_KEY, TWITTER_CONSUMER_SECRET, TWITTER_CONSUMER_SECRET and TWITTER_TOKEN_SECRET within the double qoutes
 ```
-docker run --detach --name frontend -e TWITTER_CONSUMER_KEY="" -e TWITTER_CONSUMER_SECRET="" -e TWITTER_TOKEN_KEY="" -e TWITTER_TOKEN_SECRET="" -e KAFKA_BROKERS="kafka1:9092" scaledaction/sentiment-analysis-ingest-frontend TweetSubject
+docker run --detach --name frontend --link kafka1:kafka \
+-e TWITTER_CONSUMER_KEY="" \
+-e TWITTER_CONSUMER_SECRET="" \
+-e TWITTER_TOKEN_KEY="" \
+-e TWITTER_TOKEN_SECRET="" \
+-e KAFKA_BROKERS="kafka1:9092" scaledaction/sentiment-analysis-ingest-frontend TweetSubject
 ```
 
 #### Start the Spark application (backend) in a Docker container
@@ -108,8 +115,8 @@ docker stop backend
 docker stop kafka1
 docker stop cassandra1
 
-docker rm -v frontend
-docker rm -v backend
+docker rm frontend
+docker rm backend
 docker rm -v kafka1
 docker rm -v cassandra1
 ```
