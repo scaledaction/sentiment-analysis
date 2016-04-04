@@ -13,6 +13,7 @@ import org.apache.spark.streaming.kafka.KafkaUtils
 import org.apache.spark.streaming.{ Seconds, StreamingContext, Time }
 import org.apache.spark.{ SparkConf, SparkContext }
 import org.slf4j.LoggerFactory
+import scala.io.Source
 import spray.json.{ JsString, JsonParser }
 
 case class Tweet(tweet: String, score: Double, batchtime: Long, tweet_text: String, query: String)
@@ -70,12 +71,28 @@ object DataIngestBackendApp extends HasCassandraConfig with HasKafkaConfig with 
     ssc.awaitTermination()
   }
 
-  def createModel(sc: SparkContext, htf: HashingTF): ClassificationModel = {
-    val positiveData = sc.textFile("/tweet-corpus/positive.gz")
-      .map { text => new LabeledPoint(1, htf.transform(text.split(" "))) }
-    val negativeData = sc.textFile("/tweet-corpus/negative.gz")
-      .map { text => new LabeledPoint(0, htf.transform(text.split(" "))) }
+  private def createModel(sc: SparkContext, htf: HashingTF): ClassificationModel = {
+    val (positiveData, pSource) = dataFromResource(sc, htf, "/tweet-corpus/positive.gz", 1)
+    val (negativeData, nSource) = dataFromResource(sc, htf, "/tweet-corpus/negative.gz", 0)
     val training = positiveData.union(negativeData)
-    NaiveBayes.train(training, lambda = 1.0, modelType = "multinomial")
+    try {
+      NaiveBayes.train(training, lambda = 1.0, modelType = "multinomial")
+    } finally {
+      pSource.close
+      nSource.close
+    }
+  }
+
+  private def dataFromResource(sc: SparkContext, htf: HashingTF, path: String, label: Int): (RDD[LabeledPoint], Source) = {
+    val (rdd, source) = textFileFromResource(sc, path)
+    val data = rdd.map { text => new LabeledPoint(label, htf.transform(text.split(" "))) }
+    (data, source)
+  }
+
+  private def textFileFromResource(sc: SparkContext, path: String): (RDD[String], Source) = {
+    val stream = getClass.getResourceAsStream(path)
+    val source = Source.fromInputStream(stream, "ISO-8859-1")
+    val rdd = sc.parallelize(source.getLines.toSeq)
+    (rdd, source)
   }
 }
